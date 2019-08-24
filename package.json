@@ -1,0 +1,31 @@
+{
+  "name": "anagramapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/start.js",
+  "dependencies": {
+    "@overnightjs/core": "^1.6.9",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.1",
+    "eslint": "^6.2.2",
+    "nodemon": "^1.19.1",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev": "nodemon --config \"nodemon.json\"/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tim-Kerr/AnagramAPI.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tim-Kerr/AnagramAPI/issues"
+  },
+  "homepage": "https://github.com/Tim-Kerr/AnagramAPI#readme"
+}
