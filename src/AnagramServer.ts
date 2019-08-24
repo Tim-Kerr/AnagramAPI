@@ -1,11 +1,12 @@
 import { Server } from '@overnightjs/core';
 import * as bodyParser from 'body-parser';
-import * as controllers from './controllers';
+import { AnagramsController } from './controllers/AnagramController';
+import { WordsController } from './controllers/WordController';
 import { Logger } from '@overnightjs/logger';
 
-class AnagramServer extends Server {
+export class AnagramAPIServer extends Server {
 
-    private readonly SERVER_STARTED = 'Example server started on port: ';
+    private readonly SERVER_STARTED = 'AnagramAPI server started on port: ';
 
     constructor() {
         super(true);
@@ -15,24 +16,13 @@ class AnagramServer extends Server {
     }
 
     public start(port: number): void {
-        this.app.get('*', (req, res) => {
-            res.send(this.SERVER_STARTED + port);
-        });
         this.app.listen(port, () => {
             Logger.Imp(this.SERVER_STARTED + port);
         });
     }
 
     private initControllers() {
-        const ctlrInstances = [];
-        for (const name in controllers) {
-            if (controllers.hasOwnProperty(name)) {
-                const controller = (controllers as any)[name];
-                ctlrInstances.push(new controller());
-            }
-        }
-        super.addControllers(ctlrInstances);
+        const controllers = [new AnagramsController(), new WordsController()];
+        super.addControllers(controllers);
     }
 }
-
-export default AnagramServer;

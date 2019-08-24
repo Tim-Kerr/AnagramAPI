@@ -1,4 +1,4 @@
-import AnagramServer from './AnagramServer';
+import { AnagramAPIServer } from './AnagramServer';
 
-const anagramServer = new AnagramServer();
+const anagramServer = new AnagramAPIServer();
 anagramServer.start(3000);
