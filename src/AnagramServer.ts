@@ -1,8 +1,9 @@
 import { Server } from '@overnightjs/core';
 import * as bodyParser from 'body-parser';
-import { AnagramsController } from './controllers/AnagramController';
-import { WordsController } from './controllers/WordController';
+import { AnagramsController } from './controllers/AnagramsController';
+import { WordsController } from './controllers/WordsController';
 import { Logger } from '@overnightjs/logger';
+import { AnagramManager } from './AnagramManager';
 
 export class AnagramAPIServer extends Server {
 
@@ -22,7 +23,8 @@ export class AnagramAPIServer extends Server {
     }
 
     private initControllers() {
-        const controllers = [new AnagramsController(), new WordsController()];
+        const anagramManager = new AnagramManager();
+        const controllers = [new AnagramsController(anagramManager), new WordsController(anagramManager)];
         super.addControllers(controllers);
     }
 }
