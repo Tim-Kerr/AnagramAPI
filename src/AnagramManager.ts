@@ -1,6 +1,8 @@
 export class AnagramManager {
-
-    private _corpus: { [key: string]: string[] } = {};
+    private _corpus: string[] = [];
+    private _anagramLookupTable: { [key: string]: string[] } = {};
+    private _wordCount: number = 0;
+    private _totalWordCharacterCount: number = 0;
 
     /**
      * Returns the given word's anagram hash.
@@ -41,7 +43,7 @@ export class AnagramManager {
     public deleteWord(word: string): void {
         const anagramHash = this.generateAnagramHash(word);
         const anagrams = this.getAnagramsArray(anagramHash);
-        this._corpus[anagramHash] = anagrams.filter(w => w !== word);
+        this._anagramLookupTable[anagramHash] = anagrams.filter(w => w !== word);
     }
 
     /**
@@ -50,14 +52,14 @@ export class AnagramManager {
      * @param anagramHash The anagram hash key to delete from the corpus
      */
     public deleteAnagrams(anagramHash: string) {
-        delete this._corpus[anagramHash];
+        delete this._anagramLookupTable[anagramHash];
     }
 
     /**
      * Delete all words from the corpus
      */
     public deleteAll() {
-        this._corpus = {};
+        this._anagramLookupTable = {};
     }
 
     /**
@@ -68,10 +70,10 @@ export class AnagramManager {
      */
     public getAnagramsArray(word: string): string[] {
         const anagramHash = this.generateAnagramHash(word);
-        let anagrams = this._corpus[anagramHash];
+        let anagrams = this._anagramLookupTable[anagramHash];
         if (!anagrams) {
-            this._corpus[anagramHash] = [];
-            anagrams = this._corpus[anagramHash];
+            this._anagramLookupTable[anagramHash] = [];
+            anagrams = this._anagramLookupTable[anagramHash];
         }
 
         return anagrams;
@@ -96,7 +98,7 @@ export class AnagramManager {
         const anagramHashes: string[] = [];
         words.forEach(w => {
             anagramHashes.push(this.generateAnagramHash(w));
-        })
+        });
 
         // Returns true if all elements are the same, returns false otherwise.
         return anagramHashes.every(h => h === anagramHashes[0]);

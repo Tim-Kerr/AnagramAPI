@@ -9,12 +9,17 @@ export class AnagramsController {
 
     /**
      * Returns a JSON array of English-language words that are anagrams of the word passed in the URL.
+     * Takes an optional query param 'limit' that indicates the maximum number of anagrams to return.
+     * If the limit param is not supplied the max number of elements is 1000.
+     * 
+     * Ex: anagrams/read.json?limit=5
      */
     @Get(':word.json')
     public anagrams(req: Request, res: Response) {
         const word = req.params.word;
+        const limit = parseInt(req.params.limit || '1000');
 
-        res.status(200).json({ anagrams: this._anagramManager.getAnagramsForWord(word) });
+        res.status(200).json({ anagrams: this._anagramManager.getAnagramsForWord(word).slice(0, limit) });
     }
 
     /**
