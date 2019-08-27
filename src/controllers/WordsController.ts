@@ -21,6 +21,16 @@ export class WordsController {
     }
 
     /**
+     * Returns a count of words in the corpus and min/max/median/average word length
+     */
+    @Get('words/info.json')
+    public wordInfo(req: Request, res: Response) {
+        // TODO implement
+
+        res.status(200).json({ info: {} });
+    }
+
+    /**
      * Deletes the word passed in from the URL from the data store
      */
     @Delete('words/:word.json')
@@ -32,23 +42,13 @@ export class WordsController {
     }
 
     /**
-     * Deletes all contents of the data store.
+     * Deletes all words from the store.
      */
     @Delete('words.json')
     public deleteAllWords(req: Request, res: Response) {
         this._anagramManager.deleteAll();
 
         res.status(204).send();
-    }
-
-    /**
-     * Returns a count of words in the corpus and min/max/median/average word length
-     */
-    @Get('words/info.json')
-    public wordCount(req: Request, res: Response) {
-        // TODO implement
-
-        res.status(200).json({ info: {} });
     }
 
     /**
