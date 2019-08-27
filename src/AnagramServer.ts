@@ -12,7 +12,7 @@ export class AnagramAPIServer extends Server {
     constructor() {
         super(true);
 
-        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.json({ limit: '10mb' }));
         this.initControllers();
     }
 

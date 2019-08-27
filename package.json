@@ -20,8 +20,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --config \"nodemon.json\"/",
-    "build": "rm -rf ./build/ && tsc",
-    "start-prod": "node build/start.js"
+    "build": "rmdir /s .\\build\\ && tsc",
+    "start-prod": "node build/start.js",
+    "parse-dictionary": "node parseDictionary.js"
   },
   "repository": {
     "type": "git",
