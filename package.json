@@ -33,5 +33,6 @@
   "bugs": {
     "url": "https://github.com/Tim-Kerr/AnagramAPI/issues"
   },
-  "homepage": "https://github.com/Tim-Kerr/AnagramAPI#readme"
+  "homepage": "https://github.com/Tim-Kerr/AnagramAPI#readme",
+  "bin": "build/start.js"
 }
