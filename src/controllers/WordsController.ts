@@ -1,6 +1,5 @@
 import { Controller, Middleware, Get, Put, Post, Delete } from '@overnightjs/core';
 import { Request, Response } from 'express';
-import { Logger } from '@overnightjs/logger';
 import { AnagramManager } from '../AnagramManager';
 
 @Controller('')
@@ -47,7 +46,6 @@ export class WordsController {
      */
     @Get('words/info.json')
     public wordCount(req: Request, res: Response) {
-
         // TODO implement
 
         res.status(200).json({ info: {} });
