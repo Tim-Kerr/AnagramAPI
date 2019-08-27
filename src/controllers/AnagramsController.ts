@@ -50,6 +50,10 @@ export class AnagramsController {
 
     /**
      * Returns all anagram groups of size >= *x*
+     * 
+     * Takes a required query string param: 'size'.
+     * 
+     * Ex: anagrams/groups?size=4
      */
     @Get('groups')
     public anagramGroups(req: Request, res: Response) {
