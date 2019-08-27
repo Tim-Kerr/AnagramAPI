@@ -18,11 +18,11 @@
     "typescript": "^3.5.3"
   },
   "scripts": {
-    "test": "ruby anagram_test.rb",
+    "test": "ruby tests/anagram_test.rb",
     "start": "nodemon --config \"nodemon.json\"/",
     "build": "tsc",
     "start-prod": "node build/start.js",
-    "parse-dictionary": "node parseDictionary.js"
+    "parse-dictionary": "node scripts/parseDictionary.js"
   },
   "repository": {
     "type": "git",
