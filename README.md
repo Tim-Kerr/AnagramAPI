@@ -37,7 +37,7 @@ Pros:
 * O(1) Runtime to calculate word count & min/max/average/median word length.
 
 Cons:
-* Have to maintain 2 data structure / more memory usage
+* Have to maintain 2 data structures / more memory usage
 * Higher runtime O(nlog(n)) when adding and removing words from the corpus because of the need to maintain the sorted order of the array
 
 
