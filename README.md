@@ -26,6 +26,21 @@ A word's anagram hash is computed by:
 
 The anagram hash is then used in a key/value dictionary to lookup a word's anagrams in O(1) time. Fast! Computing the word's anagram hash is a function of word length since we need to sort the characters of the word. The hash computation runtime would be `O(nlog(n))` where n = word length (assuming JavaScript's `.sort()` function implements some variation of QuickSort).
 
+## Tradeoffs
+In order to efficiently calculate word count & min/max/average/median word lengths the anagram key/value dictionary is not the most optimal data structure. The shape of the data doesn't allow for constant time operations to complete the calculations. 
+
+The solution:
+* Keep an array of all words in the corpus sorted by word length
+* Keep a running total of the total number of characters contained in the corpus (used to calculate average word length). This character total is updated every time a word is added or removed from the corpus.
+
+Pros:
+* O(1) Runtime to calculate word count & min/max/average/median word length.
+
+Cons:
+* Have to maintain 2 data structure / more memory usage
+* Higher runtime O(nlog(n)) when adding and removing words from the corpus because of the need to maintain sorted order of the array
+
+
 ## API Limitations
 * No request validation has been implemented. The API assumes consumers of the api will use the proper data contracts when making requests to the server.
 * The API can receive at most 10mb from a single request. A request will be rejected if the payload is larger than 10mb.
@@ -65,15 +80,15 @@ Examples :
 
 **Add Words:**
 Takes a JSON array of English-language words and adds them to the corpus (data store). 
-Url: `POST localhost:3000/words.json`
-Payload: `{ "words": ["word1", "word2", "word3", ...] }`
-Returns: `201 Created`
+* Url: `POST localhost:3000/words.json`
+* Payload: `{ "words": ["word1", "word2", "word3", ...] }`
+* Returns: `201 Created`
 
 (extra credit)
 **Word Info**
 Returns a count of words in the corpus and min/max/median/average word length
-Url: `GET localhost:3000/words/info.json`
-Returns: `200`
+* Url: `GET localhost:3000/words/info.json`
+* Returns: `200`
 
     {
 	    "wordCount": <word_count_value>,
@@ -88,27 +103,27 @@ Returns: `200`
 
 **Delete Word**
 Deletes the word passed in from the URL from the data store
-Url: `DELETE localhost:3000/words/:word.json`
-Returns: `204`
+* Url: `DELETE localhost:3000/words/:word.json`
+* Returns: `204`
 
 **Delete All Words**
 Deletes all words from the store.
-Url: `DELETE localhost:3000/words.json`
-Returns: `204`
+* Url: `DELETE localhost:3000/words.json`
+* Returns: `204`
 
 (extra credit)
 **Delete Word And Anagrams**
 Deletes a word and all of its anagrams from the store
-Url: `DELETE localhost:3000/words/anagrams/:word.json`
-Returns: `204`
+* Url: `DELETE localhost:3000/words/anagrams/:word.json`
+* Returns: `204`
 
 **Get Anagrams**
 Returns a JSON array of English-language words that are anagrams of the word passed in the URL.
 Takes an optional query param `limit` that indicates the maximum number of anagrams returned in the response.
 0 <= limit <= 100
 If the `limit` query param is not supplied the max number of anagrams returned is 100.
-Url: `GET localhost:3000/:word.json?limit=<limit>`
-Returns: `200`
+* Url: `GET localhost:3000/:word.json?limit=<limit>`
+* Returns: `200`
 
     {
 	    "anagrams": [...]
@@ -117,8 +132,8 @@ Returns: `200`
 (extra credit)
 **Most Anagrams**
 Returns a JSON array of the top *x* words with the most anagrams
-Url: `GET localhost:3000/most`
-Returns: `200`
+* Url: `GET localhost:3000/most`
+* Returns: `200`
 
     {
 	    "words": [...]
@@ -129,8 +144,8 @@ Returns: `200`
 Returns a boolean indicating if the words passed in the query string params are anagrams of each other.
 Words are passed in query string params as a comma delimited list of words
 `Ex: /anagrams?words=dear,dare,read`
-Url: `GET localhost:3000/anagrams?words=<word1>,<word2>,...`
-Returns `200`
+* Url: `GET localhost:3000/anagrams?words=<word1>,<word2>,...`
+* Returns `200`
 
     {
 	    "areAnagrams": <true|false>
@@ -141,8 +156,8 @@ Returns `200`
 Returns a JSON array of all anagram groups of size >= *x*. Each element in the array is an anagram group.
 0 >= size >= 100
 Takes a required query string param: `size`
- Url: `GET localhost:3000/anagrams/groups?size=<size>`
- Returns: `200`
+* Url: `GET localhost:3000/anagrams/groups?size=<size>`
+* Returns: `200`
  
 
     {
