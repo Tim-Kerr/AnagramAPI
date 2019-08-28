@@ -64,8 +64,7 @@ Examples :
 * If a permissions dialog appears, click "Allow".
 * The Anagram API server will open a Node cmd window and start the server on `localhost:3000/`
 * Alternatively, you can run the server in development mode:
-_Execute `npm install` to download the project dependencies_
-_Execute `npm run start` to start the server on localhost:3000/_
+_Execute `npm install` to download the project dependencies, then execute `npm run start` to start the server on localhost:3000/_
 
 ## Making Requests
 * Included in the project is a file called `AnagramAPI.postman_collection.json`. This file contains all of the requests (along with payload examples) for the api. [Postman](https://www.getpostman.com/downloads/) is an HTTP client that allows you to test your API endpoints.
