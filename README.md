@@ -38,7 +38,7 @@ Pros:
 
 Cons:
 * Have to maintain 2 data structure / more memory usage
-* Higher runtime O(nlog(n)) when adding and removing words from the corpus because of the need to maintain sorted order of the array
+* Higher runtime O(nlog(n)) when adding and removing words from the corpus because of the need to maintain the sorted order of the array
 
 
 ## API Limitations
@@ -121,8 +121,11 @@ Deletes a word and all of its anagrams from the store
 Returns a JSON array of English-language words that are anagrams of the word passed in the URL.
 Takes an optional query param `limit` that indicates the maximum number of anagrams returned in the response.
 0 <= limit <= 100
+Takes an optional boolean query param `includeProperNouns` that indicates whether or not to include proper nouns in the result.
+If not specified, the API returns proper nouns by default.
+
 If the `limit` query param is not supplied the max number of anagrams returned is 100.
-* Url: `GET localhost:3000/:word.json?limit=<limit>`
+* Url: `GET localhost:3000/:word.json?limit=<limit>?includeProperNouns=true`
 * Returns: `200`
 
     {
