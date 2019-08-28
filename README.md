@@ -63,9 +63,9 @@ Examples :
 * Included in the project are executables for Linux, MacOS, and Windows. Open the `execuables/` folder and launch the executable for your operating system. (NOTE: Only tested the windows .exe since I don't have a Mac or Linux computer. If for some reason your .exe doesn't work please try running on Windows!)
 * If a permissions dialog appears, click "Allow".
 * The Anagram API server will open a Node cmd window and start the server on `localhost:3000/`
-* Alternatively you can run the server in development mode:
- - Execute `npm install` to download the project dependencies
- - Execute `npm run start` to start the server on localhost:3000/
+* Alternatively, you can run the server in development mode:
+_Execute `npm install` to download the project dependencies_
+_Execute `npm run start` to start the server on localhost:3000/_
 
 ## Making Requests
 * Included in the project is a file called `AnagramAPI.postman_collection.json`. This file contains all of the requests (along with payload examples) for the api. [Postman](https://www.getpostman.com/downloads/) is an HTTP client that allows you to test your API endpoints.
