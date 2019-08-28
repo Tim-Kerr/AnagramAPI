@@ -15,7 +15,7 @@ export class WordsController {
         const words = req.body.words as string[] || [];
 
         // Add each word to the corpus
-        words.forEach(word => this._anagramManager.addWord(word));
+        this._anagramManager.addWords(words);
 
         res.status(201).send();
     }
@@ -25,9 +25,17 @@ export class WordsController {
      */
     @Get('words/info.json')
     public wordInfo(req: Request, res: Response) {
-        // TODO implement
-
-        res.status(200).json({ info: {} });
+        res.status(200).json({
+            info: {
+                wordCount: this._anagramManager.wordCount(),
+                wordLength: {
+                    min: this._anagramManager.minWordLength(),
+                    max: this._anagramManager.maxWordLength(),
+                    median: this._anagramManager.medianWordLength(),
+                    average: this._anagramManager.averageWordLength()
+                }
+            }
+        });
     }
 
     /**
@@ -57,7 +65,7 @@ export class WordsController {
     @Delete('words/anagrams/:word.json')
     public deleteWordAndAnagrams(req: Request, res: Response) {
         const word = req.params.word;
-        this._anagramManager.deleteAnagrams(this._anagramManager.generateAnagramHash(word));
+        this._anagramManager.deleteAnagrams(word);
 
         res.status(204).send();
     }

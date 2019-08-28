@@ -13,7 +13,10 @@ export class AnagramsController {
      * 0 <= limit <= 100
      * If the limit query param is not supplied the max number of anagrams returned is 100.
      * 
-     * Ex: anagrams/read.json?limit=5
+     * Takes an optional boolean parameter 'includeProperNouns' indicating whether the api should include proper nounds in the result.
+     * The API returns proper nounds in the results unless includeProperNouns=false
+     * 
+     * Ex: anagrams/read.json?limit=5?includeProperNouns=false
      */
     @Get(':word.json')
     public anagrams(req: Request, res: Response) {
@@ -21,7 +24,14 @@ export class AnagramsController {
         let limit = Math.min(100, parseInt(req.query.limit) || 100);
         if (limit <= 0) limit = 100;
 
-        res.status(200).json({ anagrams: this._anagramManager.getAnagramsForWord(word).slice(0, limit) });
+        let includeProperNouns = true;
+        if (req.query.includeProperNouns === 'false') {
+            includeProperNouns = false;
+        }
+
+        let anagrams = this._anagramManager.getAnagramsForWord(word, includeProperNouns);
+
+        res.status(200).json({ anagrams: anagrams.slice(0, limit) });
     }
 
     /**
@@ -29,10 +39,7 @@ export class AnagramsController {
      */
     @Get('most')
     public mostAnagrams(req: Request, res: Response) {
-
-        // TODO implement
-
-        res.status(200).json({ words: [] });
+        res.status(200).json({ words: this._anagramManager.mostAnagrams() });
     }
 
     /**

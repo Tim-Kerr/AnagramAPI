@@ -1,8 +1,7 @@
 export class AnagramManager {
-    private _corpus: string[] = [];
+    private _sortedWords: string[] = [];
     private _anagramLookupTable: { [key: string]: string[] } = {};
-    private _wordCount: number = 0;
-    private _totalWordCharacterCount: number = 0;
+    private _charcterCount: number = 0;
 
     /**
      * Returns the given word's anagram hash.
@@ -26,13 +25,19 @@ export class AnagramManager {
      * 
      * @param word The word to add to the corpus
      */
-    public addWord(word: string): void {
-        const anagrams = this.getAnagramsArray(word);
+    public addWords(words: string[]): void {
+        words.forEach(word => {
+            const anagrams = this.getAnagramsArray(word);
 
-        // Don't add the word if it already exists in the corpus
-        if (!anagrams.includes(word)) {
-            anagrams.push(word);
-        }
+            // Don't add the word if it already exists in the corpus
+            if (!anagrams.includes(word)) {
+                anagrams.push(word);
+                this._sortedWords.push(word);
+                this._charcterCount += word.length;
+            }
+        });
+
+        this._sortedWords.sort((a, b) => a.length - b.length);
     }
 
     /**
@@ -44,14 +49,25 @@ export class AnagramManager {
         const anagramHash = this.generateAnagramHash(word);
         const anagrams = this.getAnagramsArray(anagramHash);
         this._anagramLookupTable[anagramHash] = anagrams.filter(w => w !== word);
+
+        this.removeWordFromSortedArray(word);
     }
 
     /**
-     * Deletes the anagrams from the corpus with the specified anagram hash
+     * Deletes the word and its anagrams from the corpus
      * 
      * @param anagramHash The anagram hash key to delete from the corpus
      */
-    public deleteAnagrams(anagramHash: string) {
+    public deleteAnagrams(word: string) {
+        const anagramHash = this.generateAnagramHash(word);
+
+        // Remove elements from the sorted words array
+        if (this._anagramLookupTable[anagramHash]) {
+            this._anagramLookupTable[anagramHash].forEach(word => {
+                this.removeWordFromSortedArray(word);
+            });
+        }
+
         delete this._anagramLookupTable[anagramHash];
     }
 
@@ -60,6 +76,8 @@ export class AnagramManager {
      */
     public deleteAll() {
         this._anagramLookupTable = {};
+        this._sortedWords = [];
+        this._charcterCount = 0;
     }
 
     /**
@@ -79,15 +97,20 @@ export class AnagramManager {
         return anagrams;
     }
 
-
     /**
      * Returns an array of words that are anagrams of the input word.
      * The result will not contain the input word itself as a word is not considered an anagram to itself.
      * 
      * @param word The word whose anagrams are being retrieved
+     * @param includeProperNouns Indicates whether to include proper nounds in the result
      */
-    public getAnagramsForWord(word: string) {
-        return this.getAnagramsArray(word).filter(w => w !== word);
+    public getAnagramsForWord(word: string, includeProperNouns: boolean = true) {
+        let anagrams = this.getAnagramsArray(word).filter(w => w !== word);
+        if (!includeProperNouns) {
+            anagrams = anagrams.filter(a => a.charAt(0) === a.toLocaleLowerCase().charAt(0));
+        }
+
+        return anagrams;
     }
 
     /**
@@ -102,5 +125,75 @@ export class AnagramManager {
 
         // Returns true if all elements are the same, returns false otherwise.
         return anagramHashes.every(h => h === anagramHashes[0]);
+    }
+
+
+    /**
+     * Returns the anagram group with the most words.
+     * In the case of a tie for the longest anagram group, only one of the groups will be returned.
+     * 
+     * This could be optimized with a better data structure for the problem.
+     */
+    public mostAnagrams(): string[] {
+        let size = 0;
+        let largestAnagramsKey = '';
+
+        // Iterate the lookup table and select the anagram group with the most members
+        Object.keys(this._anagramLookupTable)
+            .filter(key => this._anagramLookupTable.hasOwnProperty(key))
+            .forEach(key => {
+                if (this._anagramLookupTable[key].length > size) {
+                    largestAnagramsKey = key;
+                    size = largestAnagramsKey.length;
+                }
+            })
+
+        return (largestAnagramsKey) ? this._anagramLookupTable[largestAnagramsKey] : [];
+    }
+
+    public wordCount(): number {
+        return this._sortedWords.length;
+    }
+
+    public minWordLength(): number {
+        return (this._sortedWords.length > 0) ? this._sortedWords[0].length : 0;
+    }
+
+    public maxWordLength(): number {
+        return (this._sortedWords.length > 0) ? this._sortedWords[this._sortedWords.length - 1].length : 0;
+    }
+
+    public medianWordLength(): number {
+        if (!this._sortedWords.length) return 0;
+
+        // Even number, return the average of the middle 2 numbers
+        if (this._sortedWords.length % 2 === 0) {
+            let num1 = this._sortedWords[Math.floor((this._sortedWords.length - 1) / 2)].length;
+            let num2 = this._sortedWords[Math.ceil((this._sortedWords.length - 1) / 2)].length;
+
+            return (num1 + num2) / 2;
+        }
+
+        return this._sortedWords[((this._sortedWords.length - 1) / 2)].length;
+    }
+
+    public averageWordLength(): number {
+        return (this._sortedWords.length > 0) ? this._charcterCount / this._sortedWords.length : 0;
+    }
+
+    // TODO
+    public getAnagramGroupsGreaterThanSize(size: number) {
+
+    }
+
+    private removeWordFromSortedArray(word: string): void {
+        console.log('removeWordFromSortedArray: ', word);
+        console.log('sortedArray ', this._sortedWords);
+        const wordIndex = this._sortedWords.indexOf(word);
+        console.log('wordIndex ', wordIndex);
+        if (wordIndex !== -1) {
+            this._sortedWords.splice(wordIndex, 1);
+            this._charcterCount -= word.length;
+        }
     }
 }
