@@ -9,8 +9,21 @@ let WordsController = class WordsController {
     }
     addWords(req, res) {
         const words = req.body.words || [];
-        words.forEach(word => this._anagramManager.addWord(word));
+        this._anagramManager.addWords(words);
         res.status(201).send();
+    }
+    wordInfo(req, res) {
+        res.status(200).json({
+            info: {
+                wordCount: this._anagramManager.wordCount(),
+                wordLength: {
+                    min: this._anagramManager.minWordLength(),
+                    max: this._anagramManager.maxWordLength(),
+                    median: this._anagramManager.medianWordLength(),
+                    average: this._anagramManager.averageWordLength()
+                }
+            }
+        });
     }
     deleteWord(req, res) {
         const word = req.params.word;
@@ -21,12 +34,9 @@ let WordsController = class WordsController {
         this._anagramManager.deleteAll();
         res.status(204).send();
     }
-    wordCount(req, res) {
-        res.status(200).json({ info: {} });
-    }
     deleteWordAndAnagrams(req, res) {
         const word = req.params.word;
-        this._anagramManager.deleteAnagrams(this._anagramManager.generateAnagramHash(word));
+        this._anagramManager.deleteAnagrams(word);
         res.status(204).send();
     }
 };
@@ -36,6 +46,12 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:paramtypes", [Object, Object]),
     tslib_1.__metadata("design:returntype", void 0)
 ], WordsController.prototype, "addWords", null);
+tslib_1.__decorate([
+    core_1.Get('words/info.json'),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [Object, Object]),
+    tslib_1.__metadata("design:returntype", void 0)
+], WordsController.prototype, "wordInfo", null);
 tslib_1.__decorate([
     core_1.Delete('words/:word.json'),
     tslib_1.__metadata("design:type", Function),
@@ -48,12 +64,6 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:paramtypes", [Object, Object]),
     tslib_1.__metadata("design:returntype", void 0)
 ], WordsController.prototype, "deleteAllWords", null);
-tslib_1.__decorate([
-    core_1.Get('words/info.json'),
-    tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Object, Object]),
-    tslib_1.__metadata("design:returntype", void 0)
-], WordsController.prototype, "wordCount", null);
 tslib_1.__decorate([
     core_1.Delete('words/anagrams/:word.json'),
     tslib_1.__metadata("design:type", Function),

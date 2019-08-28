@@ -12,17 +12,25 @@ let AnagramsController = class AnagramsController {
         let limit = Math.min(100, parseInt(req.query.limit) || 100);
         if (limit <= 0)
             limit = 100;
-        res.status(200).json({ anagrams: this._anagramManager.getAnagramsForWord(word).slice(0, limit) });
+        let includeProperNouns = true;
+        if (req.query.includeProperNouns === 'false') {
+            includeProperNouns = false;
+        }
+        let anagrams = this._anagramManager.getAnagramsForWord(word, includeProperNouns);
+        res.status(200).json({ anagrams: anagrams.slice(0, limit) });
     }
     mostAnagrams(req, res) {
-        res.status(200).json({ words: [] });
+        res.status(200).json({ words: this._anagramManager.mostAnagrams() });
     }
     areAnagrams(req, res) {
         const words = req.query.words.split(',');
         res.status(200).json({ areAnagrams: this._anagramManager.areAnagrams(words) });
     }
     anagramGroups(req, res) {
-        res.status(200).json({ anagrams: [] });
+        let size = Math.min(100, parseInt(req.query.size));
+        if (size > 100)
+            size = 100;
+        res.status(200).json({ anagrams: this._anagramManager.getAnagramGroupsGreaterThanSize(size).slice(0, 100) });
     }
 };
 tslib_1.__decorate([
