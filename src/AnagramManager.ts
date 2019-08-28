@@ -146,23 +146,35 @@ export class AnagramManager {
                     largestAnagramsKey = key;
                     size = largestAnagramsKey.length;
                 }
-            })
+            });
 
         return (largestAnagramsKey) ? this._anagramLookupTable[largestAnagramsKey] : [];
     }
 
+    /**
+     * Returns the number of words contained in the corpus
+     */
     public wordCount(): number {
         return this._sortedWords.length;
     }
 
+    /**
+     * Returns the min word length of all words in the corpus
+     */
     public minWordLength(): number {
         return (this._sortedWords.length > 0) ? this._sortedWords[0].length : 0;
     }
 
+    /**
+     * Returns the max word length of all words in the corpus
+     */
     public maxWordLength(): number {
         return (this._sortedWords.length > 0) ? this._sortedWords[this._sortedWords.length - 1].length : 0;
     }
 
+    /**
+     * Returns the median word length of words in the corpus
+     */
     public medianWordLength(): number {
         if (!this._sortedWords.length) return 0;
 
@@ -177,20 +189,38 @@ export class AnagramManager {
         return this._sortedWords[((this._sortedWords.length - 1) / 2)].length;
     }
 
+    /**
+     * Returns the average word length of words in the corpus
+     */
     public averageWordLength(): number {
         return (this._sortedWords.length > 0) ? this._charcterCount / this._sortedWords.length : 0;
     }
 
-    // TODO
+    /**
+     * Returns all anagram groups that have a length >= to a certain size
+     * @param size The size
+     */
     public getAnagramGroupsGreaterThanSize(size: number) {
+        const anagramGroups: any[] = [];
 
+        // Iterate the lookup table and select the anagram groups that meet the minimum size
+        Object.keys(this._anagramLookupTable)
+            .filter(key => this._anagramLookupTable.hasOwnProperty(key))
+            .forEach(key => {
+                if (this._anagramLookupTable[key].length >= size) {
+                    anagramGroups.push(this._anagramLookupTable[key]);
+                }
+            });
+
+        return anagramGroups;
     }
 
+    /**
+     * Removes a word from the sorted word array
+     * @param word The word to remove
+     */
     private removeWordFromSortedArray(word: string): void {
-        console.log('removeWordFromSortedArray: ', word);
-        console.log('sortedArray ', this._sortedWords);
         const wordIndex = this._sortedWords.indexOf(word);
-        console.log('wordIndex ', wordIndex);
         if (wordIndex !== -1) {
             this._sortedWords.splice(wordIndex, 1);
             this._charcterCount -= word.length;

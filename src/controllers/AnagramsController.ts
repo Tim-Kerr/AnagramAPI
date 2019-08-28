@@ -64,9 +64,8 @@ export class AnagramsController {
      */
     @Get('groups')
     public anagramGroups(req: Request, res: Response) {
+        const size = parseInt(req.query.size);
 
-        // TODO implement
-
-        res.status(200).json({ anagrams: [] })
+        res.status(200).json({ anagrams: this._anagramManager.getAnagramGroupsGreaterThanSize(size) })
     }
 }
