@@ -144,7 +144,7 @@ export class AnagramManager {
             .forEach(key => {
                 if (this._anagramLookupTable[key].length > size) {
                     largestAnagramsKey = key;
-                    size = largestAnagramsKey.length;
+                    size = this._anagramLookupTable[key].length;
                 }
             });
 

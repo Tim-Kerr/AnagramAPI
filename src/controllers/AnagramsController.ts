@@ -57,15 +57,18 @@ export class AnagramsController {
 
     /**
      * Returns all anagram groups of size >= *x*
+     * The result will contain at most 100 entries. All other results will be truncated from the response.
      * 
      * Takes a required query string param: 'size'.
+     * 0 <= size <= 100
      * 
      * Ex: anagrams/groups?size=4
      */
     @Get('groups')
     public anagramGroups(req: Request, res: Response) {
-        const size = parseInt(req.query.size);
+        let size = Math.min(100, parseInt(req.query.size));
+        if (size > 100) size = 100;
 
-        res.status(200).json({ anagrams: this._anagramManager.getAnagramGroupsGreaterThanSize(size) })
+        res.status(200).json({ anagrams: this._anagramManager.getAnagramGroupsGreaterThanSize(size).slice(0, 100) })
     }
 }
