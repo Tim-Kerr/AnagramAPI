@@ -127,7 +127,7 @@ Takes an optional boolean query param `includeProperNouns` that indicates whethe
 If not specified, the API returns proper nouns by default.
 
 If the `limit` query param is not supplied the max number of anagrams returned is 100.
-* Url: `GET localhost:3000/:word.json?limit=<limit>?includeProperNouns=true`
+* Url: `GET localhost:3000/:word.json?limit=<limit>&includeProperNouns=true`
 * Returns: `200`
 
     {
